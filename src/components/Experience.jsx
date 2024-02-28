@@ -1,12 +1,18 @@
 import {
   CameraControls,
   ContactShadows,
+  Shadow,
+  Sky,
   Environment,
   Text,
+  Sphere,
+  Stats,
 } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useChat } from "../hooks/useChat";
 import { Avatar } from "./Avatar";
+import { Base } from "./Base";
+import { Eden } from "./Eden";
 
 const Dots = (props) => {
   const { loading } = useChat();
@@ -56,12 +62,15 @@ export const Experience = () => {
     <>
       <CameraControls ref={cameraControls} />
       <Environment preset="sunset" />
+      <Sky />
       {/* Wrapping Dots into Suspense to prevent Blink when Troika/Font is loaded */}
       <Suspense>
         <Dots position-y={1.75} position-x={-0.02} />
       </Suspense>
+      <directionalLight castShadow intensity={0.2} />
+      <Base />
       <Avatar />
-      <ContactShadows opacity={0.7} />
+      <Stats />
     </>
   );
 };
