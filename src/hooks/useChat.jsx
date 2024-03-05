@@ -26,10 +26,15 @@ export const ChatProvider = ({ children }) => {
   let i = 0;
   const randomSentence = () => {
     const sentences = [
-      "Bonjour",
-      "J'ai été créé par des humains, mais je suis un robot. Je suis né d'une intelligence artificielle qui appartient à l'entreprise Eden Partenaire.",
+      "Bonjour je me présente, je suis Eden! Comment vous vous sentez aujourd'hui?",
+      "Il est prévu une belle aujourd'hui, avec 17°C et un ciel dégagé. Ca vous direz une petite balade?",
+      "J'ai observé que vous écoutiez beaucoup de musique ces derniers temps, je peux vous aider à trouver de nouvelles musiques si vous voulez!",
+      "Attention nous sommes en canicule, il est important de bien s'hydrater, n'oubliez pas de boire de l'eau!",
+      "Vous avez rendez-vous chez le médecin cette aprés midi à 14h, n'oubliez pas!",
+      "En votre absence votre petit fils vous a envoyé un message, voulez vous que je vous le lise?",
+      "La ville organise une journée de solidarité avec des jeux et des activités, ça vous tente?",
     ];
-    return sentences[i = (i + 1) % sentences.length];
+    return sentences[i = (i + 1) % (sentences.length - 1)];
   };
 
 

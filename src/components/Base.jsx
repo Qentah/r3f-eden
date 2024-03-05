@@ -4,7 +4,7 @@ Command: npx gltfjsx@6.2.16 .\public\models\base.glb -o .\src\components\Base.js
 */
 
 import React, { useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import { useGLTF, useAnimations, } from '@react-three/drei'
 
 export function Base(props) {
   const group = useRef()

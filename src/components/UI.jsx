@@ -69,7 +69,7 @@ export const UI = ({ hidden, ...props }) => {
             className={`bg-blue-800 hover:bg-blue-950 text-white p-4 px-10 font-semibold uppercase rounded-md ${loading || message ? "cursor-not-allowed opacity-30" : ""
               }`}
           >
-            DEMARRER
+            BACK
           </button>
           <button
             onClick={() => {
@@ -77,7 +77,7 @@ export const UI = ({ hidden, ...props }) => {
             }}
             className={`bg-blue-800 hover:bg-blue-950 text-white p-4 px-10 font-semibold uppercase rounded-md `}
           >
-            TEST
+            DEMOS
           </button>
         </div>
       </div >

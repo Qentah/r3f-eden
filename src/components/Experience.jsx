@@ -6,11 +6,9 @@ import {
   Environment,
   Text,
   Sphere,
-  Stats,
 } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useChat } from "../hooks/useChat";
-import { Avatar } from "./Avatar";
 import { Base } from "./Base";
 import { Eden } from "./Eden";
 
@@ -69,8 +67,7 @@ export const Experience = () => {
       </Suspense>
       <directionalLight castShadow intensity={0.2} />
       <Base />
-      <Avatar />
-      <Stats />
+      <Eden />
     </>
   );
 };
