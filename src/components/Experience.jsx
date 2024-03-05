@@ -58,7 +58,7 @@ export const Experience = () => {
   }, [cameraZoomed]);
   return (
     <>
-      <CameraControls ref={cameraControls} />
+      <CameraControls ref={cameraControls} smoothTime={0.75} draggingSmoothTime={0.5} />
       <Environment preset="sunset" />
       <Sky />
       {/* Wrapping Dots into Suspense to prevent Blink when Troika/Font is loaded */}
