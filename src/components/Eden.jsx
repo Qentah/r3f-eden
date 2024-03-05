@@ -91,6 +91,7 @@ export function Eden(props) {
   const { fakeMessage, setCameraZoomed } = useChat();
   const [visemes, setVisemes] = useState();
   const [audio, setAudio] = useState();
+  const [blink, setBlink] = useState(false);
 
   useEffect(() => {
     if (fakeMessage) {
@@ -121,12 +122,28 @@ export function Eden(props) {
     }
   }, [audio]);
 
+  useEffect(() => {
+    let blinkTimeout;
+    const nextBlink = () => {
+      blinkTimeout = setTimeout(() => {
+        setBlink(true);
+        setTimeout(() => {
+          setBlink(false);
+          nextBlink();
+        }, 100);
+      }, THREE.MathUtils.randInt(500, 4000));
+    };
+    nextBlink();
+    return () => clearTimeout(blinkTimeout);
+  }, []);
+
   useFrame(() => {
     Object.keys(nodes.Wolf3D_Avatar.morphTargetDictionary).forEach((key) => {
       if (key === "eyeBlinkLeft" || key === "eyeBlinkRight") {
-        return; // eyes wink/blink are handled separately
+        lerpMorphTarget(key, 0, 0.5);
+      } else {
+        lerpMorphTarget(key, 0, 0.33);
       }
-      lerpMorphTarget(key, 0, 0.2);
     });
 
     if (audio) {
@@ -135,10 +152,16 @@ export function Eden(props) {
         const prev = visemes[i - 1].audioOffset / 10000000;
         const cur = visemes[i].audioOffset / 10000000;
         if (time >= prev && time < cur) {
-          lerpMorphTarget(azureIDtoViseme[visemes[i].visemeId], 1, 0.2);
+          lerpMorphTarget(azureIDtoViseme[visemes[i].visemeId], 1.2, 0.2);
         }
       }
     }
+
+    if (blink) {
+      lerpMorphTarget("eyeBlinkLeft", 1, 1);
+      lerpMorphTarget("eyeBlinkRight", 1, 1);
+    }
+
   });
 
   useEffect(() => {
