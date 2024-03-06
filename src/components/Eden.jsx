@@ -56,6 +56,7 @@ destination.onAudioStart = (_) => {
   destination.mute();
 };
 const audioConfig = SpeechSDK.AudioConfig.fromSpeakerOutput(destination);
+
 function playTTS(text) {
   const ssmlText = ssml(text);
   const synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig, audioConfig);
@@ -88,36 +89,76 @@ export function Eden(props) {
     animations.find((a) => a.name === "Idle") ? "Idle" : animations[0].name // Check if Idle animation exists otherwise use first animation
   );
 
-  const { fakeMessage, setCameraZoomed } = useChat();
+  const { fakeMessage, setCameraZoomed, message } = useChat();
   const [visemes, setVisemes] = useState();
   const [audio, setAudio] = useState();
   const [blink, setBlink] = useState(false);
 
+  //create queue with current, next operator to playmessage as queue
+  const [queue, setQueue] = useState([]);
+  const [playing, setPlaying] = useState(false);
+
+  async function playMessage(message) {
+    if (!message)
+      return;
+    setPlaying(true);
+    const { audio, visemeQueue } = await playTTS(message);
+    setAudio(audio);
+    setVisemes(visemeQueue);
+  }
+
+  useEffect(() => {
+    if (message) {
+      console.log({ message })
+      if (!playing)
+        playMessage(message);
+      else {
+        if (queue.length > 0) {
+          setQueue([...queue, message]);
+        }
+        else {
+          setQueue([message]);
+        }
+      }
+    }
+  }, [message]);
+
+  useEffect(() => {
+    if (playing) {
+      setCameraZoomed(true);
+      setAnimation("Talking_1");
+    }
+    else {
+      if (queue.length > 0) {
+        const nextMessage = queue.shift();
+        playMessage(nextMessage);
+      } else {
+        setCameraZoomed(false);
+        setAnimation("Idle");
+      }
+    }
+  }, [playing]);
+
+  //--------------------------------------------------------------------------------
+
   useEffect(() => {
     if (fakeMessage) {
-      playTTS(fakeMessage).then(({ audio, visemeQueue }) => {
-        setAudio(audio);
-        setVisemes(visemeQueue);
-      });
+      playMessage(fakeMessage);
     }
   }, [fakeMessage]);
 
   useEffect(() => {
     if (audio) {
       audio.play();
-      setCameraZoomed(true);
-      setAnimation("Talking_1");
       audio.onended = () => {
-        setCameraZoomed(false);
-        setAnimation("Idle");
         setAudio();
+        setPlaying(false);
       };
     }
     return () => {
       if (audio) {
         audio.pause();
-        setCameraZoomed(false);
-        setAnimation("Idle");
+        setPlaying(false);
       }
     }
   }, [audio]);

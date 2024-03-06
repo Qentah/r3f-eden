@@ -3,16 +3,16 @@ import { useChat } from "../hooks/useChat";
 
 export const UI = ({ hidden, ...props }) => {
   const input = { current: { value: "" } };
-  const { chat, loading, cameraZoomed, setCameraZoomed, message, fakeChat } = useChat();
+  const { chat, loading, cameraZoomed, setCameraZoomed, fakeChat } = useChat();
 
   const sendMessage = () => {
-    input.current.value = "Bonjour";
     const text = input.current.value;
-    if (!loading && !message) {
+    if (!loading && text) {
       chat(text);
       input.current.value = "";
     }
   };
+
   if (hidden) {
     return null;
   }
@@ -63,18 +63,26 @@ export const UI = ({ hidden, ...props }) => {
           </button>
         </div>
         <div className="flex items-center justify-center gap-2 pointer-events-auto max-w-screen-sm w-full mx-auto">
+          <input
+            className="w-full placeholder:text-gray-800 placeholder:italic p-4 rounded-md bg-opacity-50 bg-white backdrop-blur-md"
+            placeholder="Type a message..."
+            ref={input}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                sendMessage();
+              }
+            }}
+          />
           <button
-            disabled={loading || message}
+            disabled={loading}
             onClick={sendMessage}
-            className={`bg-blue-800 hover:bg-blue-950 text-white p-4 px-10 font-semibold uppercase rounded-md ${loading || message ? "cursor-not-allowed opacity-30" : ""
+            className={`bg-blue-800 hover:bg-blue-950 text-white p-4 px-10 font-semibold uppercase rounded-md ${loading ? "cursor-not-allowed opacity-30" : ""
               }`}
           >
             BACK
           </button>
           <button
-            onClick={() => {
-              fakeChat();
-            }}
+            onClick={() => fakeChat()}
             className={`bg-blue-800 hover:bg-blue-950 text-white p-4 px-10 font-semibold uppercase rounded-md `}
           >
             DEMOS

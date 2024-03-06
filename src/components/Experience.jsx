@@ -63,7 +63,7 @@ export const Experience = () => {
       <Sky />
       {/* Wrapping Dots into Suspense to prevent Blink when Troika/Font is loaded */}
       <Suspense>
-        <Dots position-y={1.75} position-x={-0.02} />
+        <Dots position-y={1.8} position-x={-0.02} />
       </Suspense>
       <directionalLight castShadow intensity={0.2} />
       <Base />
