@@ -15,6 +15,7 @@ import { useChat } from "../hooks/useChat";
 
 //TTS Config
 import * as SpeechSDK from "microsoft-cognitiveservices-speech-sdk";
+import { useSpeech } from "../hooks/useSpeech";
 const subKey = "37e0ba695f324c639507bf0cfdb55539";
 const region = "westeurope";
 const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subKey, region);
@@ -90,6 +91,7 @@ export function Eden(props) {
   );
 
   const { fakeMessage, setCameraZoomed, message } = useChat();
+  const { startListening } = useSpeech();
   const [visemes, setVisemes] = useState();
   const [audio, setAudio] = useState();
   const [blink, setBlink] = useState(false);

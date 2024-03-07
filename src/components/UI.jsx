@@ -1,9 +1,11 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useChat } from "../hooks/useChat";
+import { useSpeech } from "../hooks/useSpeech";
 
 export const UI = ({ hidden, ...props }) => {
   const input = { current: { value: "" } };
   const { chat, loading, cameraZoomed, setCameraZoomed, fakeChat } = useChat();
+  const { listening, message, temp, startListening, stopListening } = useSpeech();
 
   const sendMessage = () => {
     const text = input.current.value;
@@ -12,6 +14,29 @@ export const UI = ({ hidden, ...props }) => {
       input.current.value = "";
     }
   };
+
+
+  const record = () => {
+    if (listening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
+
+  useEffect(() => {
+    if (temp) {
+      input.current.value = temp;
+    }
+  }, [temp]);
+
+  useEffect(() => {
+    if (message) {
+      input.current.value = message;
+      stopListening();
+      sendMessage();
+    }
+  }, [message]);
 
   if (hidden) {
     return null;
@@ -74,12 +99,12 @@ export const UI = ({ hidden, ...props }) => {
             }}
           />
           <button
-            disabled={loading}
-            onClick={sendMessage}
-            className={`bg-blue-800 hover:bg-blue-950 text-white p-4 px-10 font-semibold uppercase rounded-md ${loading ? "cursor-not-allowed opacity-30" : ""
+            disabled={loading | listening}
+            onClick={record}
+            className={`bg-blue-800 hover:bg-blue-950 text-white p-4 px-10 font-semibold uppercase rounded-md ${loading | listening} ? "cursor-not-allowed opacity-30" : ""
               }`}
           >
-            BACK
+            MICRO
           </button>
           <button
             onClick={() => fakeChat()}

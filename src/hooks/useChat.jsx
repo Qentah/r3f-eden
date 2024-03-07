@@ -5,33 +5,12 @@ const ChatContext = createContext();
 let i = 0;
 
 export const ChatProvider = ({ children }) => {
-
-  const randomInstruct = () => {
-    const sentences = [
-      "Fais moi un autre poeme de 5 vers",
-      "Fais moi une blague",
-      "Quel heure est-il?",
-      "Quel bruit fait un chien? en 1 phrase",
-    ]
-    return sentences[i = (i + 1) % sentences.length];
-  };
-
   const chat = async (message) => {
     setLoading(true);
     const date = new Date();
-    const heure = date.getHours();
-    const minute = date.getMinutes();
-    const seconde = date.getSeconds();
     try {
-      // setTimeout(() => {
-      //   setMessage(randomSentence());
-      //   setLoading(false);
-      // }, 1000);
-      // return;
-
       fetch(`${backendUrl}/chat/gpt?message=${message}`).then(async response => {
         let text = "";
-
         const stream = new WritableStream({
           async write(chunk) {
             text += chunk;
@@ -47,6 +26,8 @@ export const ChatProvider = ({ children }) => {
         await response.body
           .pipeThrough(new TextDecoderStream())
           .pipeTo(stream);
+
+        //on stream end set loading to false
       })
     } catch (e) {
       console.error(e);
@@ -64,7 +45,10 @@ export const ChatProvider = ({ children }) => {
       ". Vous avez rendez-vous chez le médecin cette aprés midi à 14h, voulez vous que je vous explique comment vous y rendre?",
       ". En votre absence votre petit fils vous a envoyé un message, voulez vous que je vous le lise?",
     ];
-    return sentences[Math.floor(Math.random() * sentences.length)];
+
+    const a = "a. D'ailleur je laisse mes créateur se présenter"
+
+    return a;
   };
 
   const fakeChat = () => {
