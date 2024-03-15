@@ -90,7 +90,7 @@ export const UI = ({ hidden, ...props }) => {
         <div className="flex items-center justify-center gap-2 pointer-events-auto max-w-screen-sm w-full mx-auto">
           <input
             className="w-full placeholder:text-gray-800 placeholder:italic p-4 rounded-md bg-opacity-50 bg-white backdrop-blur-md"
-            placeholder="Type a message..."
+            placeholder="Votre message..."
             ref={input}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
