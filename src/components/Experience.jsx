@@ -6,6 +6,7 @@ import {
   Environment,
   Text,
   Sphere,
+  useTexture,
 } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useChat } from "../hooks/useChat";
@@ -53,20 +54,30 @@ export const Experience = () => {
     if (cameraZoomed) {
       cameraControls.current.setLookAt(0, 1.5, 1.5, 0, 1.5, 0, true);
     } else {
-      cameraControls.current.setLookAt(0, 2.2, 5, 0, 1.0, 0, true);
+      cameraControls.current.setLookAt(0, 2.2, 5, 0, 1.2, 0, true);
     }
   }, [cameraZoomed]);
+
+
+  const texture = useTexture("bg.jpg");
+
+
+
   return (
     <>
       <CameraControls ref={cameraControls} smoothTime={0.75} draggingSmoothTime={0.5} />
       <Environment preset="sunset" />
       {/* <Sky /> */}
       {/* Wrapping Dots into Suspense to prevent Blink when Troika/Font is loaded */}
-      <Suspense>
+      {/* <Suspense>
         <Dots position-y={1.8} position-x={-0.02} />
-      </Suspense>
+      </Suspense> */}
       {/* <directionalLight castShadow intensity={0.2} /> */}
-      {/* <Base /> */}
+      <Base />
+      {/* <mesh position={[0, 1.5, -2]} >
+        <planeGeometry args={[5.4, 5.8]} />
+        <meshBasicMaterial map={texture} />
+      </mesh> */}
       <Eden />
     </>
   );
