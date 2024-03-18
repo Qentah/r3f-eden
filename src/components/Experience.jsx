@@ -60,6 +60,7 @@ export const Experience = () => {
 
 
   const texture = useTexture("bg.jpg");
+  const texture0 = useTexture("dojo.jpg");
 
 
 
@@ -73,11 +74,15 @@ export const Experience = () => {
         <Dots position-y={1.8} position-x={-0.02} />
       </Suspense> */}
       {/* <directionalLight castShadow intensity={0.2} /> */}
-      <Base />
+      {/* <Base /> */}
       {/* <mesh position={[0, 1.5, -2]} >
         <planeGeometry args={[5.4, 5.8]} />
         <meshBasicMaterial map={texture} />
       </mesh> */}
+      <mesh position={[0, 1.3, -1.5]} >
+        <planeGeometry args={[5 / 1.7, 10 / 1.7]} />
+        <meshBasicMaterial map={texture0} />
+      </mesh>
       <Eden />
     </>
   );

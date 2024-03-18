@@ -1,10 +1,47 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import useWebSocket from "react-use-websocket";
+
 
 const backendUrl = "http://localhost:8000";
+const websocketUrl = "ws://192.168.1.133:8765/ws"
 const ChatContext = createContext();
 let i = 0;
 
+let text = "";
+
 export const ChatProvider = ({ children }) => {
+
+    const { sendMessage, lastMessage, readyState } = useWebSocket(websocketUrl, {
+        retryOnError: true,
+        shouldReconnect: (_) => true,
+        reconnectAttempts: 10,
+        reconnectInterval: (attemptNumber) =>
+            Math.min(Math.pow(2, attemptNumber) * 1000, 60000),
+    });
+
+    useEffect(() => {
+        if (lastMessage !== null) {
+            if (lastMessage.data !== null && lastMessage.data != "") {
+                text += lastMessage.data;
+                console.log({ text });
+                if (text.includes('.') || text.includes('!') || text.includes('?')) {
+                    const before = text.split(/[\.\!\?]/)[0] + text[text.split(/[\.\!\?]/)[0].length]
+                    const after = text.split(/[\.\!\?]/)[1];
+                    text = after;
+                    // setMessage(before);
+                }
+            }
+        }
+    }
+        , [lastMessage]);
+
+
+
+    useEffect(() => {
+        console.log({ readyState });
+    }, [readyState]);
+
+
     const chat = async (message) => {
         setLoading(true);
         const date = new Date();
@@ -62,6 +99,7 @@ export const ChatProvider = ({ children }) => {
         <ChatContext.Provider
             value={{
                 chat,
+                sendMessage,
                 loading,
                 cameraZoomed,
                 setCameraZoomed,

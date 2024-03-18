@@ -4,13 +4,13 @@ import { useSpeech } from "../hooks/useSpeech";
 
 export const UI = ({ hidden, ...props }) => {
   const input = { current: { value: "" } };
-  const { chat, loading, cameraZoomed, setCameraZoomed, fakeChat } = useChat();
+  const { sendMessage: send, loading, cameraZoomed, setCameraZoomed, fakeChat } = useChat();
   const { listening, message, temp, startListening, stopListening } = useSpeech();
 
   const sendMessage = () => {
     const text = input.current.value;
     if (!loading && text) {
-      chat(text);
+      send(text);
       input.current.value = "";
     }
   };
